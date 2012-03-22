@@ -72,6 +72,20 @@
                         </p:password>
                     </p:column>
                 </p:row>
+                <p:row>
+                    <p:column>
+                        Grupos do usuário:
+                    </p:column>
+                    <p:column>
+                        <p:pickList id="gruposUsuarioField" value="#{UsuarioController.dualListGrupo}" var="grupoPickList" itemValue="#{grupoPickList}" converter="GrupoConverter">
+                            <f:facet name="sourceCaption">Grupos disponíveis</f:facet>
+                            <f:facet name="targetCaption">Grupos selecionados</f:facet>
+                            <p:column>
+                                #{grupoPickList.nome}
+                            </p:column>
+                        </p:pickList>
+                    </p:column>
+                </p:row>
             </p:panelGrid>
             <br/>
             <p:commandButton value="Salvar" actionListener="#{UsuarioController.save()}" update=":listaUsuarioForm"/>

@@ -78,6 +78,6 @@ public class ClienteController implements Serializable{
     public void delete(){
         current = (Cliente) dataModel.getRowData();
         new ClienteDao().delete(current);
-        atulizarLista();
+        atulizarLista(); 
     }
 }

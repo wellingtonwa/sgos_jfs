@@ -58,21 +58,48 @@
 
     
       <p:layout fullPage="true" >
-        <p:layoutUnit position="center">
-          <ui:include src="./menu_superior.xhtml"/>
-          
-          
-          
-          <div id="content_page">
-              
-           
-            <p:panel id="content">
-                <ui:insert name="content_page">Conteudo da página</ui:insert>
-            </p:panel>
-          </div>
+        <p:layoutUnit position="center" rendered="#{UsuarioAuthController.logado}">
+        <ui:include src="./menu_superior.xhtml"/>
+            <div id="content_page">
+                <p:panel id="content">
+                    <ui:insert name="content_page">Conteudo da página</ui:insert>
+                </p:panel>
+            </div>
+        </p:layoutUnit>
+          <p:layoutUnit position="center" rendered="#{not UsuarioAuthController.logado}">
+               <p:dialog header="Login" draggable="false" closable="false" visible="true" appendToBody="true" widgetVar="formLogin">
+                    <p:messages id="messages"  autoUpdate="true"/>
+                    <h:form id="login_form" style="text-align: center;">
+
+                        <p:panelGrid id="grid">
+                            <p:row>
+                                <p:column>
+                                    <h:outputLabel for="email" value="E-mail"/>
+                                </p:column>
+                                <p:column colspan="2">
+                                    <h:inputText id="email" value="#{UsuarioAuthController.loginEmail}" required="true"/>
+                                    <p:message for="email" id="emailMessage"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputLabel for="senha" value="senha"/>
+                                </p:column>
+                                <p:column colspan="2">
+                                    <h:inputSecret id="senha" value="#{UsuarioAuthController.senha}" required="true"/>
+                                    <p:message for="email" id="senhaMessage"/>
+                                </p:column>
+                            </p:row>
+
+                        </p:panelGrid>
+
+                        <p:commandButton value="Acessar" actionListener="#{UsuarioAuthController.verificarLogin()}" update=":login_form:grid"/>
+                    </h:form>
+            </p:dialog>
         </p:layoutUnit>
       </p:layout>    
-      <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+      <p:ajaxStatus onstart="statusDialog.show();" oncomplete="statusDialog.hide();"/>
       <p:dialog modal="true" widgetVar="statusDialog" header="Aguarde..."   
             draggable="false" closable="false">  
           <h:graphicImage value="images/loading.gif" />   

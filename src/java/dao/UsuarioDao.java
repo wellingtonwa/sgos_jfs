@@ -6,6 +6,7 @@ package dao;
 
 import java.util.List;
 import model.Usuario;
+import org.hibernate.Query;
 import org.hibernate.Transaction;
 
 /**
@@ -49,5 +50,23 @@ public class UsuarioDao {
     
     public List<Usuario> getRegistros(){
         return Dao.getSession().createQuery("from Usuario").list();
+    }
+    
+    public Usuario getUsuarioByLoginAndPassword(String login, String senha){
+        Query query = Dao.getSession().createQuery("from Usuario u WHERE u.login = :login AND senha = :senha");
+        
+        query.setString("login", login);
+        query.setString("senha", senha);
+        
+        return (Usuario) query.uniqueResult();
+    }
+    
+    public Usuario getUsuarioByEmailAndPassword(String email, String senha){
+        Query query = Dao.getSession().createQuery("from Usuario u WHERE u.email = :email AND senha = :senha");
+        
+        query.setString("email", email);
+        query.setString("senha", senha);
+        
+        return (Usuario) query.uniqueResult();
     }
 }

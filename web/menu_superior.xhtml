@@ -6,30 +6,35 @@
       xmlns:p="http://primefaces.org/ui"
       >
   
-  <h:form id="menu_superior">
+    <h:form id="menu_superior" rendered="#{UsuarioAuthController.logado}">
 
     <p:menubar>
-      <p:submenu label="Cadastros">
+        <p:submenu label="Cadastros" rendered="#{UsuarioAuthController.temPermissaoTela('Cadastro de Clientes') 
+                                                 || UsuarioAuthController.temPermissaoTela('Cadastro de Equipamentos')
+                                                 || UsuarioAuthController.temPermissaoTela('Cadastro de Serviços')
+                                                 || UsuarioAuthController.temPermissaoTela('Cadastro de Componentes')
+                                                 || UsuarioAuthController.temPermissaoTela('Cadastro de Equipamentos')
+                                                 || UsuarioAuthController.temPermissaoTela('Cadastro de Ordens Serviço')}">
         
-          <p:menuitem value="Clientes" onclick="jLink('ui/cliente/mainCliente.jsf', '#content_page')"/>
-          <p:menuitem value="Tipos de Equipamentos" onclick="jLink('ui/tipoEquipamento/mainTipoEquipamento.jsf', '#content_page')"/>
-          <p:menuitem value="Serviços" onclick="jLink('ui/servico/mainServico.jsf', '#content_page')"/>
-          <p:menuitem value="Componentes" onclick="jLink('ui/componente/mainComponente.jsf', '#content_page')"/>
-          <p:menuitem value="Equipamento" onclick="jLink('ui/equipamento/mainEquipamento.jsf', '#content_page')"/>
-          <p:menuitem value="Ordens Serviço" onclick="jLink('ui/ordemServico/mainOrdemServico.jsf', '#content_page')"/>
+          <p:menuitem value="Clientes" onclick="jLink('ui/cliente/mainCliente.jsf', '#content_page')" rendered="#{UsuarioAuthController.temPermissaoTela('Cadastro de Clientes')}"/>
+          <p:menuitem value="Tipos de Equipamentos" onclick="jLink('ui/tipoEquipamento/mainTipoEquipamento.jsf', '#content_page')"  rendered="#{UsuarioAuthController.temPermissaoTela('Cadastro de Tipos de Equipamentos')}"/>
+          <p:menuitem value="Serviços" onclick="jLink('ui/servico/mainServico.jsf', '#content_page')" rendered="#{UsuarioAuthController.temPermissaoTela('Cadastro de Serviços')}"/>
+          <p:menuitem value="Componentes" onclick="jLink('ui/componente/mainComponente.jsf', '#content_page')" rendered="#{UsuarioAuthController.temPermissaoTela('Cadastro de Componentes')}"/>
+          <p:menuitem value="Equipamentos" onclick="jLink('ui/equipamento/mainEquipamento.jsf', '#content_page')"  rendered="#{UsuarioAuthController.temPermissaoTela('Cadastro de Equipamentos')}"/>
+          <p:menuitem value="Ordens Serviço" onclick="jLink('ui/ordemServico/mainOrdemServico.jsf', '#content_page')" rendered="#{UsuarioAuthController.temPermissaoTela('Cadastro de Ordens Serviço')}"/>
         
       </p:submenu>
       <p:submenu label="Administração">
         
-          <p:menuitem value="Cadastro de Usuarios" onclick="jLink('ui/usuario/mainUsuario.jsf', '#content_page')"/>
-          <p:menuitem value="Cadastro de Grupos" onclick="jLink('ui/grupo/mainGrupo.jsf', '#content_page')"/>
-          <p:menuitem value="Cadastro de Telas" onclick="jLink('ui/tela/mainTela.jsf', '#content_page')"/>
-          <p:menuitem value="Cadastro de Permissões" onclick="jLink('ui/permissao/mainPermissao.jsf', '#content_page')"/>
-          <p:menuitem value="Associação Grupos e Permissões" onclick="jLink('ui/grupo/associacaoGrupoTelaPermissao.jsf', '#content_page')"/>
+          <p:menuitem value="Cadastro de Usuarios" onclick="jLink('ui/usuario/mainUsuario.jsf', '#content_page')" rendered="#{UsuarioAuthController.temPermissaoTela('Cadastro de Usuarios')}"/>
+          <p:menuitem value="Cadastro de Grupos" onclick="jLink('ui/grupo/mainGrupo.jsf', '#content_page')" rendered="#{UsuarioAuthController.temPermissaoTela('Cadastro de Grupos')}"/>
+          <p:menuitem value="Cadastro de Telas" onclick="jLink('ui/tela/mainTela.jsf', '#content_page')" rendered="#{UsuarioAuthController.temPermissaoTela('Cadastro de Telas')}"/>
+          <p:menuitem value="Cadastro de Permissões" onclick="jLink('ui/permissao/mainPermissao.jsf', '#content_page')"  rendered="#{UsuarioAuthController.temPermissaoTela('Cadastro de Permissões')}"/>
+          <p:menuitem value="Associação Grupos e Permissões" onclick="jLink('ui/grupo/associacaoGrupoTelaPermissao.jsf', '#content_page')" rendered="#{UsuarioAuthController.current.isAdmin}"/>
         
       </p:submenu>
         
-      <p:menuitem value="Logout" actionListener="#{usuarioController.redirecionarLogin()}"/>
+        <p:menuitem value="Logout" actionListener="#{UsuarioAuthController.logout()}"/>
       
     </p:menubar>
     

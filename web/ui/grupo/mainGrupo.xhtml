@@ -47,12 +47,12 @@
                     <f:facet name="header">
                         Ações
                     </f:facet>
-                    <p:commandButton value="Editar" actionListener="#{GrupoController.prepararEditar()}" update=":insertEditForm"/>
-                    <p:commandButton value="Excluir" actionListener="#{GrupoController.delete()}" update=":listGrupoForm"/>
+                    <p:commandButton value="Editar" actionListener="#{GrupoController.prepararEditar()}" update=":insertEditForm" rendered="#{UsuarioAuthController.temPermissaoTelaAcao('Cadastro de Grupos', 'Alterar')}"/>
+                    <p:commandButton value="Excluir" actionListener="#{GrupoController.delete()}" update=":listGrupoForm" rendered="#{UsuarioAuthController.temPermissaoTelaAcao('Cadastro de Grupos', 'Excluir')}"/>
                 </p:column>
             </p:dataTable>
             <br/>
-            <p:commandButton value="Cadastrar" actionListener="#{GrupoController.prepararAdicionar()}" update=":insertEditForm"/>
+            <p:commandButton value="Cadastrar" actionListener="#{GrupoController.prepararAdicionar()}" update=":insertEditForm"  rendered="#{UsuarioAuthController.temPermissaoTelaAcao('Cadastro de Grupos', 'Salvar')}"/>
         </h:form>
     </p:panel>
     
