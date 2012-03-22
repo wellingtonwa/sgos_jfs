@@ -167,7 +167,7 @@ public class OrdemServicoController implements Serializable{
             equipamentos = current.getCliente().getEquipamentos();
             current.setEquipamento(equipamentos.get(0));
         }
-        else
+        else 
             equipamentos = new ArrayList<Equipamento>();
         
         this.carregarServicosByTipoEquipamento(); 

@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <p:panel closable="true" header="Associação de Grupo, Tela e Permissão" closeSpeed="100" closeTitle="Fechar" widgetVar="grupoTelaPermissaoPanel" visible="false">
+        <h:form id="insertEditForm" style="text-align: center;">
+            <p:panelGrid style="width: 100%; text-align: left">
+                <p:row>
+                    <p:column colspan="3">
+                        Grupo: <h:outputText value="#{GrupoPermissaoController.grupo.nome}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:pickList id="telaPickListField" value="#{GrupoPermissaoController.telaDualListaModel}"
+                                    var="telaPickList" itemValue="#{telaPickList}" converter="TelaConverter">
+                            <f:facet name="sourceCaption">Telas Disponíveis</f:facet>
+                            <f:facet name="targetCaption">Telas Selecionadas</f:facet>
+                            <p:column>
+                                #{telaPickList.nome}
+                            </p:column>
+                        </p:pickList>
+                    </p:column>
+                    <p:column rowspan="2">
+                        <p:commandButton value="Adicionar" actionListener="#{GrupoPermissaoController.adicionarPermissoes()}" update="permissoesAdicionadasDataTable"/>
+                    </p:column>
+                    <p:column rowspan="2">
+                        <p:dataTable id="permissoesAdicionadasDataTable" value="#{GrupoPermissaoController.dataModelPermissoes}" var="permissoesDataTable" rowKey="#{permissoesDataTable.id}" selection="#{GrupoPermissaoController.permissoesAdicionadasSelecionadas}" selectionMode="multiple">
+                            <p:column>
+                                <f:facet name="header">
+                                    Permissões do grupo
+                                </f:facet>
+                                #{permissoesDataTable.id.tela.nome}
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    Permissões
+                                </f:facet>
+                                #{permissoesDataTable.id.permissao.permissao}
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:commandButton value="Remover" actionListener="#{GrupoPermissaoController.removerPermissao()}" update=":insertEditForm"/>
+                            </f:facet>
+                        </p:dataTable>
+                    </p:column>
+                </p:row>
+                              
+                <p:row>
+                    <p:column>
+                        <p:pickList id="permissaoPickListField" value="#{GrupoPermissaoController.permissaoDualListModel}"
+                                    var="permissaoPickList" itemValue="#{permissaoPickList}" converter="PermissaoConverter">
+                            <f:facet name="sourceCaption">Permissões Disponíveis</f:facet>
+                            <f:facet name="targetCaption">Permissões Selecionadas</f:facet>
+                            <p:column>
+                                #{permissaoPickList.permissao}
+                            </p:column>
+                        </p:pickList>
+                    </p:column>
+                </p:row>  
+            </p:panelGrid>
+            <br/>
+            <p:commandButton value ="Salvar" actionListener="#{GrupoPermissaoController.save()}" oncomplete="grupoTelaPermissaoPanel.close()"/>
+            <p:commandButton value="Cancelar" type="reset" onclick="grupoTelaPermissaoPanel.close()"/>
+        </h:form>
+    </p:panel>
+    <p:panel header="Lista de grupos">
+        <h:form id="listGrupoTelaPermissaoForm">
+            <p:dataTable paginator="true" rows="7" value="#{GrupoPermissaoController.dataModel}" var="grupoDataTable" emptyMessage="Não nenhum grupo cadastrado">
+                <p:column>
+                    <f:facet name="header">
+                        Grupo
+                    </f:facet>
+                    #{grupoDataTable.nome}
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        Ações
+                    </f:facet>
+                    <p:commandButton value="Editar Permissões" actionListener="#{GrupoPermissaoController.prepararEditar()}" update=":insertEditForm" oncomplete="grupoTelaPermissaoPanel.show()"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </p:panel>
+</html>
+

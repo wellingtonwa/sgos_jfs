@@ -12,7 +12,7 @@
     <property name="hibernate.format_sql">true</property>
 <!--    < property name=”hibernate.current_session_context_class”>thread  < /property>-->
     <property name="hibernate.current_session_context_class">thread</property>
-    <property name="hibernate.hbm2ddl.auto">update</property>
+<!--    <property name="hibernate.hbm2ddl.auto">update</property>-->
     <mapping class="model.Cliente"/>
     <mapping class="model.Componente"/>
     <mapping class="model.Servico"/>
@@ -26,6 +26,9 @@
     <mapping class="model.ServicoOrdemServicoPK"/>
     <mapping class="model.Grupo"/>
     <mapping class="model.Permissao"/>
+    <mapping class="model.Tela"/>
+    <mapping class="model.GrupoPermissaoTela"/>
+    <mapping class="model.GrupoPermissaoTelaPK"/>
     
   </session-factory>
 </hibernate-configuration>

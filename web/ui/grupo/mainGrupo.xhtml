@@ -5,31 +5,54 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
     
-    <p:panel closable="true" closeTitle="Fechar" visible="false" header="Cadastra Grupo" widgetVar="grupoPanel">
-        
+    <p:panel closable="true" closeTitle="Fechar" visible="false" header="Cadastrar Grupo" widgetVar="grupoPanel" closeSpeed="100">
+        <h:form id="insertEditForm" style="text-align: center;">
+            <p:messages id="messagesGrupoForm" autoUpdate="true"/>
+            <p:panelGrid style=" width: 100%; text-align: center;">
+                
+                <p:row>
+                    <p:column style="width: 50%; text-align: right;">
+                        Nome:
+                    </p:column>
+                    <p:column style="text-align: left;">
+                        <p:inputText id="nomeGrupoField" value="#{GrupoController.current.nome}" required="true" requiredMessage="Preencha o nome do Grupo"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column style="width: 50%; text-align: right;">
+                        Descrição:
+                    </p:column>
+                    <p:column style="text-align: left;">
+                        <p:inputTextarea id="descricaoGrupoField" value="#{GrupoController.current.descricao}"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <br/>
+            <p:commandButton value="Salvar" actionListener="#{GrupoController.save()}" update=":listGrupoForm"/>
+            <p:commandButton value="Cancelar" type="reset" onclick="grupoPanel.close()"/>
+        </h:form>
     </p:panel>
     
     <p:panel header="Lista de Grupos">
-        <h:form id="listGrupoForm">
+        <h:form id="listGrupoForm" style="text-align: center;">
             <p:dataTable id="listGrupoDataTable" paginator="true" rows="7" value="#{GrupoController.dataModel}" var="grupoDataModel" emptyMessage="Nenhum grupo encontrado">
                 <p:column>
                     <f:facet name="header">
                         Nome
                     </f:facet>
-                    <h:inputText id="nomeGrupoInputText" value="#{grupoDataModel.nome}">
-                        <p:tooltip value="#{grupoDataModel.descricao}" for="nomeGrupoInputText" rendered="#{not empty grupoDataModel.descricao}"/>
-                    </h:inputText>
+                    <h:outputText id="nomeGrupoInputText" value="#{grupoDataModel.nome}"/>
+                    <p:tooltip value="#{grupoDataModel.descricao}" for="nomeGrupoInputText" rendered="#{not empty grupoDataModel.descricao}"/>
                 </p:column>
                 <p:column>
                     <f:facet name="header">
                         Ações
                     </f:facet>
-                    <p:commandButton value="Editar" actionListener="#{GrupoController.prepararAdicionar()}" update=":insertEditForm"/>
+                    <p:commandButton value="Editar" actionListener="#{GrupoController.prepararEditar()}" update=":insertEditForm"/>
                     <p:commandButton value="Excluir" actionListener="#{GrupoController.delete()}" update=":listGrupoForm"/>
                 </p:column>
             </p:dataTable>
             <br/>
-            <p:commandButton value="Cadastrar" actionListener="#{GrupoController.prepararAdicionar()}" update="::insertEditForm"/>
+            <p:commandButton value="Cadastrar" actionListener="#{GrupoController.prepararAdicionar()}" update=":insertEditForm"/>
         </h:form>
     </p:panel>
     

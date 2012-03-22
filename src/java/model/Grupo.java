@@ -6,12 +6,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 
 /**
  *
@@ -34,7 +29,10 @@ public class Grupo implements Serializable{
     
     @ManyToMany(cascade= CascadeType.ALL)
     private List<Permissao> permissoes;
-
+    
+    @OneToMany(mappedBy="id.grupo", cascade= CascadeType.ALL)
+    private List<GrupoPermissaoTela> PermissoesGrupo;
+    
     public String getDescricao() {
         return descricao;
     }
@@ -74,6 +72,13 @@ public class Grupo implements Serializable{
     public void setUsuarios(List<Usuario> usuarios) {
         this.usuarios = usuarios;
     }
-    
-    
+
+    public List<GrupoPermissaoTela> getPermissoesGrupo() {
+        return PermissoesGrupo;
+    }
+
+    public void setPermissoesGrupo(List<GrupoPermissaoTela> PermissoesGrupo) {
+        this.PermissoesGrupo = PermissoesGrupo;
+    }
+        
 }

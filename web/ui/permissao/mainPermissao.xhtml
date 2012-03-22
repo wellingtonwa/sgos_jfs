@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <p:panel closable="true" visible="false" closeSpeed="100" closeTitle="Fechar" header="Cadastrar Permissão" widgetVar="permissaoPanel">
+        <h:form id="insertEditForm" style="text-align: center">
+            <p:messages autoUpdate="true" id="permissaoMessage"/>
+            <p:panelGrid style="width: 100%; text-align: left;">
+                <p:row>
+                    <p:column>
+                        Nome da permissão:
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="nomePermissaoField" value="#{PermissaoController.current.permissao}" required="true" requiredMessage="Preencha o nome da permissão"/>
+                    </p:column>                    
+                </p:row>
+            </p:panelGrid>
+            <br/>
+            <p:commandButton value="Salvar" actionListener="#{PermissaoController.save()}" update=":listPermissaoForm"/>
+            <p:commandButton value="Cancelar" type="reset" onclick="permissaoPanel.close()"/>
+        </h:form>
+    </p:panel>
+    <p:panel header="Lista de Permissões">
+        <h:form id="listPermissaoForm" style="text-align: center;">
+            <p:dataTable emptyMessage="Nenhuma permissão cadastrada" paginator="true" rows="7" value="#{PermissaoController.dataModel}" var="permissaoDataTable">
+                <p:column>
+                    <f:facet name="header">
+                        Permissão
+                    </f:facet>
+                    <h:outputText value="#{permissaoDataTable.permissao}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        Ações
+                    </f:facet>
+                    <p:commandButton value="Editar" actionListener="#{PermissaoController.prepararEditar()}" update=":insertEditForm"/>
+                    <p:commandButton value="Excluir" actionListener="#{PermissaoController.delete()}" update=":listPermissaoForm"/>
+                </p:column>
+            </p:dataTable>
+            <br/>
+            <p:commandButton value="Cadastrar" actionListener="#{PermissaoController.prepararAdicionar()}" update=":insertEditForm"/>
+        </h:form>
+    </p:panel>
+</html>
+

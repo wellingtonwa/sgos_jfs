@@ -7,6 +7,7 @@ package controller;
 
 import dao.GrupoDao;
 import java.io.Serializable;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.DataModel;
@@ -26,6 +27,7 @@ public class GrupoController implements Serializable{
     private DataModel dataModel;
 
     public GrupoController() {
+        dataModel = new ListDataModel(new GrupoDao().getRegistros());
     }
 
     public Grupo getCurrent() {
@@ -37,6 +39,10 @@ public class GrupoController implements Serializable{
     }
 
     public DataModel getDataModel() {
+        List<Grupo> listGrupo = new GrupoDao().getRegistros();
+        if(dataModel.getRowCount() != listGrupo.size())
+            dataModel = new ListDataModel(listGrupo);
+        
         return dataModel;
     }
 
