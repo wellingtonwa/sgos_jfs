@@ -18,7 +18,7 @@ import model.Tela;
  *
  * @author wellington
  */
-@FacesConverter(value="TelaConverter")
+@FacesConverter(value="TelaConverter") 
 public class TelaConverter implements Converter{
     
     public static List<Tela> telaDB;

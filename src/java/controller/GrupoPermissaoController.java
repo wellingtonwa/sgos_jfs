@@ -8,7 +8,6 @@ import dao.GrupoDao;
 import dao.PermissaoDao;
 import dao.TelaDao;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -128,11 +127,21 @@ public class GrupoPermissaoController {
                 GrupoPermissaoTela grupoPermissaoTela = new GrupoPermissaoTela();
                 grupoPermissaoTela.setId(grupoPermissaoTelaPK);
                 
-                for(GrupoPermissaoTela grupoPermissaoTelaCheck : grupo.getPermissoesGrupo()){
-                    if(grupoPermissaoTelaCheck.getId().getPermissao().getId() != grupoPermissaoTela.getId().getPermissao().getId()
-                            && grupoPermissaoTelaCheck.getId().getTela().getId() != grupoPermissaoTela.getId().getTela().getId())
-                        listaPermissaoTela.add(grupoPermissaoTela);
+                if(grupo.getPermissoesGrupo().size()>0){
+                    boolean encontrado = false;
+                    for(GrupoPermissaoTela grupoPermissaoTelaCheck : grupo.getPermissoesGrupo()){
+                        if(grupoPermissaoTelaCheck.getId().getPermissao().getId() == grupoPermissaoTela.getId().getPermissao().getId()
+                                && grupoPermissaoTelaCheck.getId().getTela().getId() == grupoPermissaoTela.getId().getTela().getId()){
+                            encontrado = true;
+                            break;
+                        }
+                    }
                     
+                    if(!encontrado)
+                        listaPermissaoTela.add(grupoPermissaoTela);
+                }
+                else{
+                    listaPermissaoTela.add(grupoPermissaoTela);
                 }
             }
         }
