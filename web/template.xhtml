@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      >
+
+  <h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <title><h:outputText value="Sistema de Controle Financeiro Pessoal"/></title>
+      <script type="text/javascript" src="ui/js/jquery.price_format.1.7.js"/>
+      <script type="text/javascript">
+        function jLink(url, divRefresh){
+                var div = (divRefresh ? '#'+divRefresh.replace('#', '') : '#centro');
+                if(url=='')
+                        return;
+                      
+                url = url.replace('#', '');
+
+
+                //jQuery(div).html(aguarde);
+                jQuery.ajax({
+                        url: url,
+                        type: "GET",
+                        success: function (html){			
+                            jQuery(div).html(html);
+                        },
+                        error: function(html){
+                            jQuery(div).html(html);
+                        }
+                        
+                });
+        }
+      </script>
+      <style type="text/css">
+          .ui-layout-unit-content{
+            background: url(#{request.contextPath}/images/bg.jpg);
+            margin: 0;
+              padding: 0;
+              font-family: geneva, arial, helvetica, sans-serif;
+              font-size:80%;
+          }
+          .ui-dialog .ui-terminal {
+              border:0;
+          }
+
+          .ui-dialog.terminalDialog .ui-dialog-content {
+              padding:0;
+          }
+          </style>
+          
+    
+  </h:head>
+
+  <h:body>
+
+    
+      <p:layout fullPage="true" >
+        <p:layoutUnit position="center">
+          <ui:include src="./menu_superior.xhtml"/>
+          
+          
+          
+          <div id="content_page">
+              
+           
+            <p:panel id="content">
+                <ui:insert name="content_page">Conteudo da página</ui:insert>
+            </p:panel>
+          </div>
+        </p:layoutUnit>
+      </p:layout>    
+      <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+      <p:dialog modal="true" widgetVar="statusDialog" header="Aguarde..."   
+            draggable="false" closable="false">  
+          <h:graphicImage value="images/loading.gif" />   
+      </p:dialog> 
+    
+    
+  </h:body>
+
+</html>

@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+    <p:panel header="Cadastro de Usuarios" widgetVar="usuarioPanel" closable="true" closeTitle="Fechar" closeSpeed="250" visible="false">
+        <h:form id="insertEditForm" style="text-align: center;">
+            <p:panelGrid style="width: 100%; height: auto; text-align: left;">
+                <p:row>
+                    <p:column>
+                        <h:outputLabel for="nomeField" value="Nome"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="nomeField" value="#{UsuarioController.current.nome}" requiredMessage="Preencha o Nome" required="true" size="30">
+                            <p:ajax process="@this" event="blur" update="nomeFieldMsg"/>
+                            <p:message for="nomeField" id="nomeFieldMsg"/>
+                        </p:inputText>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputLabel for="emailField" value="E-mail"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="emailField" value="#{UsuarioController.current.email}" requiredMessage="Preencha o E-mail" required="true" size="30" validatorMessage="E-mail Inválido">
+                            <p:ajax process="@this" event="blur" update="emailFieldMsg"/>
+                            <f:validateRegex pattern="^[A-Za-z0-9_\-\.]+@[A-Za-z0-9_\-\.]{2,}\.[A-Za-z0-9]{2,}(\.[A-Za-z0-9])?" />
+                            <p:message for="emailField" id="emailFieldMsg"/>
+                        </p:inputText>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputLabel for="loginField" value="Login"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="loginField" value="#{UsuarioController.current.login}" requiredMessage="Preencha o Login" required="true" size="30">
+                            <p:ajax process="@this" event="blur" update="loginFieldMsg"/>
+                            <p:message for="loginField" id="loginFieldMsg"/>
+                        </p:inputText>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputLabel for="isAdminField" value="É administrador"/>
+                    </p:column>
+                    <p:column>
+                        <p:selectBooleanButton id="isAdminField" onLabel="Sim" offLabel="Não" value="#{UsuarioController.current.isAdmin}"/>
+                    </p:column>
+                </p:row>
+                <p:row rendered="#{UsuarioController.current.id == 0}">
+                    <p:column>
+                        <h:outputLabel for="passwordField" value="Senha"/>
+                    </p:column>
+                    <p:column>
+                        <p:password id="passwordField" value="#{UsuarioController.current.senha}" required="true" match="passwordConfirmField" >
+                            <p:ajax event="blur" process="@this passwordField,passwordConfirmField" update="passwordFieldMsg"/>
+                            <p:message for="passwordField" id="passwordFieldMsg"/>
+                        </p:password>
+                    </p:column>
+                </p:row>
+                <p:row rendered="#{UsuarioController.current.id == 0}">
+                    <p:column>
+                        <h:outputLabel for="passwordConfirmField" value="Confirme a senha"/>
+                    </p:column>
+                    <p:column>
+                        <p:password id="passwordConfirmField" value="#{UsuarioController.current.senha}" >
+                            <p:ajax event="blur" process="@this passwordField,passwordConfirmField" update="passwordFieldMsg"/>
+                        </p:password>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <br/>
+            <p:commandButton value="Salvar" actionListener="#{UsuarioController.save()}" update=":listaUsuarioForm"/>
+            <p:commandButton value="Cancelar" type="reset" onclick="usuarioPanel.close()"/>
+        </h:form>
+    </p:panel>
+    
+    
+    <p:panel header="Cadastro de Usuário" id="usuarioPanel" style="text-align: center;">
+        <h:form id="listaUsuarioForm">
+            <p:dataTable id="usuarioDataTable" paginator="true" value="#{UsuarioController.dataModel}" var="usuarioDataTable" emptyMessage="Nenhum usuário encontrado" rows="7">
+                <p:column id="nomeDataTableHeader" sortBy="#{usuarioDataTable.nome}" filterBy="#{usuarioDataTable.nome}">
+                    <f:facet name="header">Nome</f:facet>
+                    <h:outputText value="#{usuarioDataTable.nome}"/>
+                </p:column>
+                <p:column id="emailDataTableHeader" sortBy="#{usuarioDataTable.email}" filterBy="#{usuarioDataTable.email}">
+                    <f:facet name="header">E-mail</f:facet>
+                    <h:outputText value="#{usuarioDataTable.email}"/>
+                </p:column>
+                <p:column id="loginDataTableHeader" sortBy="#{usuarioDataTable.login}" filterBy="#{usuarioDataTable.login}">
+                    <f:facet name="header">Login</f:facet>
+                    <h:outputText value="#{usuarioDataTable.login}"/>
+                </p:column>
+                <p:column id="acoesDataTableHeader">
+                    <f:facet name="header">Ações</f:facet>
+                    <p:commandButton value="Editar" actionListener="#{UsuarioController.prepararEditar()}" update=":insertEditForm" oncomplete="usuarioPanel.show()"/>
+                    <p:commandButton value="Excluir" actionListener="#{UsuarioController.delete()}" update=":listaUsuarioForm"/>
+                </p:column>
+            </p:dataTable>
+            <br/>
+            <p:commandButton value="Cadastrar" actionListener="#{UsuarioController.prepararAdicionar()}" update=":insertEditForm" oncomplete="usuarioPanel.show()"/>
+        </h:form>
+    </p:panel>
+</html>
+

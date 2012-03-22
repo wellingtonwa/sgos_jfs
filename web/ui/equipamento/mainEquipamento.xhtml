@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <p:panel closable="true" closeTitle="Fechar" header="Cadastrar Equipamento" widgetVar="equipamentoPanel" visible="false">
+        <h:form id="insertEditForm" style="text-align: center;">
+            <p:messages autoUpdate="true" id="equipamentoFormMsg"/>
+            <p:panelGrid style="width: 100%; text-align: left;">
+                <p:row>
+                    <p:column>
+                        <h:outputLabel for="nomeEquipamentoField" value="Nome"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="nomeEquipamentoField" value="#{EquipamentoController.current.nome}" required="true" requiredMessage="Preencha o nome do Equipamento"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputLabel for="descricaoEquipamentoField" value="Descrição"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputTextarea id="descricaoEquipamentoField" value="#{EquipamentoController.current.descricao}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputLabel for="clienteEquipamentoField" value="Cliente"/>
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu value="#{EquipamentoController.current.cliente}" id="clienteEquipamentoField" effect="fade"  converter="ClienteConverter" required="true" requiredMessage="Selecione um cliente" style="width: 200px;">
+                            <f:selectItems value="#{EquipamentoController.clientes}" var="clienteSelectOne" itemLabel="#{clienteSelectOne.nome}" itemValue="#{clienteSelectOne}"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputLabel for="tipoEquipamenoEquipamentoField" value="Tipo de Equipamento"/>
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu value="#{EquipamentoController.current.tipoEquipamento}" id="tipoEquipamenoEquipamentoField" effect="fade"  converter="TipoEquipamentoConverter" required="true" requiredMessage="Selecione um tipo de equipamento" style="width: 200px;">
+                            <f:selectItems value="#{EquipamentoController.tiposEquipamentos}" var="tipoEquipamentoSelectOne" itemLabel="#{tipoEquipamentoSelectOne.nome}" itemValue="#{tipoEquipamentoSelectOne}"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <br/>
+            <p:commandButton value="Salvar" actionListener="#{EquipamentoController.save()}" update=":listEquipamentoForm"/>
+            <p:commandButton value="Cancelar" type="reset" onclick="equipamentoPanel.close()"/>
+        </h:form>
+    </p:panel>
+    <p:panel header="Lista de Equipamentos">
+        <h:form id="listEquipamentoForm" style="text-align: center">
+            <p:dataTable paginator="true" rows="7" emptyMessage="Nenhum equipamento encontrado" value="#{EquipamentoController.dataModel}" var="equipamentoDataTable">
+                <p:column sortBy="#{equipamentoDataTable.nome}" filterBy="#{equipamentoDataTable.nome}">
+                    <f:facet name="header">
+                        Nome
+                    </f:facet>
+                    <h:outputText value="#{equipamentoDataTable.nome}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        Descrição
+                    </f:facet>
+                    <h:outputText value="#{equipamentoDataTable.descricao}"/>
+                </p:column>
+                <p:column sortBy="#{equipamentoDataTable.cliente.nome}" filterBy="#{equipamentoDataTable.cliente.nome}">
+                    <f:facet name="header">
+                        Cliente
+                    </f:facet>
+                    <h:outputText value="#{equipamentoDataTable.cliente.nome}"/>
+                </p:column>
+                <p:column sortBy="#{equipamentoDataTable.tipoEquipamento.nome}" filterBy="#{equipamentoDataTable.tipoEquipamento.nome}">
+                    <f:facet name="header">
+                        Tipo de Equipamento
+                    </f:facet>
+                    <h:outputText value="#{equipamentoDataTable.tipoEquipamento.nome}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        Ações
+                    </f:facet>
+                    <p:commandButton value="Editar" actionListener="#{EquipamentoController.prepararEditar()}" update=":insertEditForm"/>
+                    <p:commandButton value="Excluir" actionListener="#{EquipamentoController.deletar()}" update=":listEquipamentoForm"/>
+                </p:column>
+            </p:dataTable>
+            <br/>
+            <p:commandButton value="Cadastrar" actionListener="#{EquipamentoController.prepararAdicionar()}" update=":insertEditForm"/>
+        </h:form>
+    </p:panel>
+    
+</html>
+

@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <p:panel closable="true" closeTitle="Fechar" visible="false" header="Cadastra Grupo" widgetVar="grupoPanel">
+        
+    </p:panel>
+    
+    <p:panel header="Lista de Grupos">
+        <h:form id="listGrupoForm">
+            <p:dataTable id="listGrupoDataTable" paginator="true" rows="7" value="#{GrupoController.dataModel}" var="grupoDataModel" emptyMessage="Nenhum grupo encontrado">
+                <p:column>
+                    <f:facet name="header">
+                        Nome
+                    </f:facet>
+                    <h:inputText id="nomeGrupoInputText" value="#{grupoDataModel.nome}">
+                        <p:tooltip value="#{grupoDataModel.descricao}" for="nomeGrupoInputText" rendered="#{not empty grupoDataModel.descricao}"/>
+                    </h:inputText>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        Ações
+                    </f:facet>
+                    <p:commandButton value="Editar" actionListener="#{GrupoController.prepararAdicionar()}" update=":insertEditForm"/>
+                    <p:commandButton value="Excluir" actionListener="#{GrupoController.delete()}" update=":listGrupoForm"/>
+                </p:column>
+            </p:dataTable>
+            <br/>
+            <p:commandButton value="Cadastrar" actionListener="#{GrupoController.prepararAdicionar()}" update="::insertEditForm"/>
+        </h:form>
+    </p:panel>
+    
+</html>
+

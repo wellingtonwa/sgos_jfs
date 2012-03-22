@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <p:panel closable="true" widgetVar="tipoEquipamentoPanel" closeTitle="Fechar" visible="false" header="Cadastrar Tipo de Equipamento">
+        <h:form id="insertEditForm" style="text-align: center">
+            <p:messages autoUpdate="true" id="messagesTipoEquipamento"/> 
+            <p:panelGrid style="width: 100%; text-align: left">
+                <p:row>
+                    <p:column>
+                        <h:outputLabel for="nomeTipoEquipamentoField" value="Nome"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="nomeTipoEquipamentoField" value="#{TipoEquipamentoController.current.nome}" required="true" requiredMessage="Preencha o nome do tipo de equipamento"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputLabel for="descricaoTipoEquipamentoField" value="Descrição"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputTextarea id="descricaoTipoEquipamentoField" value="#{TipoEquipamentoController.current.descricao}"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:commandButton value="Salvar" actionListener="#{TipoEquipamentoController.save()}" update=":listaTipoEquipamentoForm"/>
+            <p:commandButton value="Cancelar" type="reset" onclick="tipoEquipamentoPanel.close()"/>
+        </h:form>
+    </p:panel>
+    
+    <p:panel header="Lista de Tipos de Equipamentos" style="text-align: center;">
+        <h:form id="listaTipoEquipamentoForm">
+            <p:dataTable paginator="true" rows="7" emptyMessage="Nenhum tipo de Equipamento" value="#{TipoEquipamentoController.dataModel}" var="tipoEquipamentoDataTable" >
+                <p:column sortBy="#{tipoEquipamentoDataTable.nome}" filterBy="#{tipoEquipamentoDataTable.nome}">
+                    <f:facet name="header">
+                        Nome
+                    </f:facet>
+                    <h:outputText value="#{tipoEquipamentoDataTable.nome}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        Descrição
+                    </f:facet>
+                    <h:outputText value="#{tipoEquipamentoDataTable.descricao}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        Ação
+                    </f:facet>
+                    <p:commandButton value="Editar" actionListener="#{TipoEquipamentoController.prepararEditar()}" update=":insertEditForm"/>
+                    <p:commandButton value="Excluir" actionListener="#{TipoEquipamentoController.delete()}" update=":listaTipoEquipamentoForm"/>
+                </p:column>
+            </p:dataTable>
+            <br/>
+            <p:commandButton value="Cadastrar" actionListener="#{TipoEquipamentoController.prepararAdicionar()}" update=":insertEditForm"/>
+        </h:form>
+    </p:panel>
+    
+</html>
+
