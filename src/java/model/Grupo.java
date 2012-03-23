@@ -80,5 +80,27 @@ public class Grupo implements Serializable{
     public void setPermissoesGrupo(List<GrupoPermissaoTela> PermissoesGrupo) {
         this.PermissoesGrupo = PermissoesGrupo;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Grupo other = (Grupo) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 59 * hash + (int) (this.id ^ (this.id >>> 32));
+        return hash;
+    }
         
 }

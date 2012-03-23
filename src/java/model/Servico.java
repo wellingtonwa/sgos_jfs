@@ -72,6 +72,28 @@ public class Servico implements Serializable{
     public void setTiposEquipamentos(List<TipoEquipamento> tiposEquipamentos) {
         this.tiposEquipamentos = tiposEquipamentos;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Servico other = (Servico) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 79 * hash + (int) (this.id ^ (this.id >>> 32));
+        return hash;
+    }
     
     
     

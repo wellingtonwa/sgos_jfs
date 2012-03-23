@@ -5,9 +5,8 @@
 package model;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import java.util.List;
+import javax.persistence.*;
 
 /**
  *
@@ -21,6 +20,8 @@ public class Tela implements Serializable{
     private String nome;
     private String descricao;
     
+    @OneToMany(mappedBy="id.tela", cascade= CascadeType.ALL)
+    private List<GrupoPermissaoTela> PermissoesTela;
     
     
     public Tela() {
@@ -49,5 +50,35 @@ public class Tela implements Serializable{
     public void setNome(String nome) {
         this.nome = nome;
     }
-            
+
+    public List<GrupoPermissaoTela> getPermissoesTela() {
+        return PermissoesTela;
+    }
+
+    public void setPermissoesTela(List<GrupoPermissaoTela> PermissoesTela) {
+        this.PermissoesTela = PermissoesTela;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Tela other = (Tela) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 89 * hash + (int) (this.id ^ (this.id >>> 32));
+        return hash;
+    }
+    
 }

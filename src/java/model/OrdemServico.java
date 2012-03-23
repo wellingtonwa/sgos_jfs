@@ -117,6 +117,28 @@ public class OrdemServico implements Serializable{
         this.status = status;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final OrdemServico other = (OrdemServico) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 11 * hash + (int) (this.id ^ (this.id >>> 32));
+        return hash;
+    }
+
    
            
 }

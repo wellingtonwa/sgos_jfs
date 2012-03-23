@@ -5,6 +5,7 @@
 package controller;
 
 import dao.GrupoDao;
+import dao.GrupoPermissaoTelaDao;
 import dao.PermissaoDao;
 import dao.TelaDao;
 import java.util.ArrayList;
@@ -127,59 +128,50 @@ public class GrupoPermissaoController {
                 GrupoPermissaoTela grupoPermissaoTela = new GrupoPermissaoTela();
                 grupoPermissaoTela.setId(grupoPermissaoTelaPK);
                 
-                if(grupo.getPermissoesGrupo().size()>0){
-                    boolean encontrado = false;
-                    for(GrupoPermissaoTela grupoPermissaoTelaCheck : grupo.getPermissoesGrupo()){
-                        if(grupoPermissaoTelaCheck.getId().getPermissao().getId() == grupoPermissaoTela.getId().getPermissao().getId()
-                                && grupoPermissaoTelaCheck.getId().getTela().getId() == grupoPermissaoTela.getId().getTela().getId()){
-                            encontrado = true;
-                            break;
-                        }
-                    }
-                    
-                    if(!encontrado)
-                        listaPermissaoTela.add(grupoPermissaoTela);
-                }
-                else{
-                    listaPermissaoTela.add(grupoPermissaoTela);
-                }
+                if(!grupo.getPermissoesGrupo().contains(grupoPermissaoTela))
+                    grupo.getPermissoesGrupo().add(grupoPermissaoTela);
+                
+//                if(grupo.getPermissoesGrupo().size()>0){
+//                    boolean encontrado = false;
+//                    for(GrupoPermissaoTela grupoPermissaoTelaCheck : grupo.getPermissoesGrupo()){
+//                        if(grupoPermissaoTelaCheck.getId().getPermissao().getId() == grupoPermissaoTela.getId().getPermissao().getId()
+//                                && grupoPermissaoTelaCheck.getId().getTela().getId() == grupoPermissaoTela.getId().getTela().getId()){
+//                            encontrado = true;
+//                            break;
+//                        }
+//                    }
+//                    
+//                    if(!encontrado)
+//                        listaPermissaoTela.add(grupoPermissaoTela);
+//                }
+//                else{
+//                    listaPermissaoTela.add(grupoPermissaoTela);
+//                }
             }
         }
         
-        for(GrupoPermissaoTela grupoPermissaoTelaCheck : grupo.getPermissoesGrupo()){
-            listaPermissaoTela.add(grupoPermissaoTelaCheck);
-        }
+        new GrupoDao().save(grupo);
         
-        dataModelPermissoes = new ListDataModel(listaPermissaoTela);
+        dataModelPermissoes = new ListDataModel(grupo.getPermissoesGrupo());
         
     }
     
     public void removerPermissao(){
         //GrupoPermissaoTela grupoPermissaoTela = (GrupoPermissaoTela) dataModelPermissoes.getRowData();
         
-        List<GrupoPermissaoTela> listaPermissaoTela = new ArrayList<GrupoPermissaoTela>();
-        
-        List<Integer>  listIdRemover = new ArrayList<Integer>();
-        
-        
-        for(int i = 0; i < dataModelPermissoes.getRowCount(); i++){
-            dataModelPermissoes.setRowIndex(i);
-            GrupoPermissaoTela gpt = (GrupoPermissaoTela) dataModelPermissoes.getRowData();
-            listaPermissaoTela.add(gpt);
+        for(GrupoPermissaoTela grupoPermissaoTela : permissoesAdicionadasSelecionadas){            
+            Tela tela = grupoPermissaoTela.getId().getTela();
+            Permissao permissao = grupoPermissaoTela.getId().getPermissao();
+            
+            grupo.getPermissoesGrupo().remove(grupoPermissaoTela);
+            tela.getPermissoesTela().remove(grupoPermissaoTela);
+            permissao.getPermissoesPermissao().remove(grupoPermissaoTela);
+            new GrupoPermissaoTelaDao().delete(grupoPermissaoTela);
         }
         
-        for(GrupoPermissaoTela grupoPermissaoTela : permissoesAdicionadasSelecionadas){
-            for(int i = 0; i < listaPermissaoTela.size(); i++){
-                GrupoPermissaoTela gpt = listaPermissaoTela.get(i);
-                if(gpt.getId().getPermissao().getId() == grupoPermissaoTela.getId().getPermissao().getId()
-                        && gpt.getId().getTela().getId() == grupoPermissaoTela.getId().getTela().getId()){
-                    listaPermissaoTela.remove(i);
-                    break;
-                }
-            }
-        }
         
-        dataModelPermissoes = new ListDataModel(listaPermissaoTela);
+        
+        dataModelPermissoes = new ListDataModel(grupo.getPermissoesGrupo());
         
     }
 
