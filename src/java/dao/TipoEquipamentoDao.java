@@ -16,28 +16,22 @@ import org.hibernate.Transaction;
 public class TipoEquipamentoDao {
     
     public void save(TipoEquipamento tipoEquipamento){
-        Transaction t = Dao.getSession().beginTransaction();
         
         try {
             if(tipoEquipamento.getId() == 0)
                 Dao.getSession().save(tipoEquipamento);
             else
-                Dao.getSession().update(tipoEquipamento);
-            t.commit();
+                Dao.getSession().merge(tipoEquipamento);
         } catch (Exception e) {
-            t.rollback();
             e.printStackTrace();
         }
     }
     
     public void delete(TipoEquipamento tipoEquipamento){
-        Transaction t = Dao.getSession().beginTransaction();
         
         try {
             Dao.getSession().delete(tipoEquipamento);
-            t.commit();
         } catch (Exception e) {
-            t.rollback();
             e.printStackTrace();
         }
     }

@@ -7,7 +7,6 @@ package dao;
 import java.util.List;
 import model.Equipamento;
 import org.hibernate.Query;
-import org.hibernate.Transaction;
 
 /**
  *
@@ -16,28 +15,22 @@ import org.hibernate.Transaction;
 public class EquipamentoDao {
  
     public void save(Equipamento equipamento){
-        Transaction t = Dao.getSession().beginTransaction();
         
         try {
             if(equipamento.getId() == 0)
                 Dao.getSession().save(equipamento);
             else
-                Dao.getSession().update(equipamento);
-            t.commit();
+                Dao.getSession().merge(equipamento);
         } catch (Exception e) {
-            t.rollback();
             e.printStackTrace();
         }
     }
     
     public void delete(Equipamento equipamento){
-        Transaction t = Dao.getSession().beginTransaction();
         
         try {
             Dao.getSession().delete(equipamento);
-            t.commit();
         } catch (Exception e) {
-            t.rollback();
             e.printStackTrace();
         }
     }

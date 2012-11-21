@@ -6,7 +6,6 @@ package dao;
 
 import java.util.List;
 import model.Tela;
-import org.hibernate.Transaction;
 
 /**
  *
@@ -15,26 +14,20 @@ import org.hibernate.Transaction;
 public class TelaDao {
 
     public void save(Tela tela){
-        Transaction t = Dao.getSession().beginTransaction();
         try {
             if(tela.getId() == 0)
                 Dao.getSession().save(tela);
             else
-                Dao.getSession().update(tela);
-            t.commit();
+                Dao.getSession().merge(tela);
         } catch (Exception e) {
-            t.rollback();
             e.printStackTrace();
         }
     }
     
     public void delete(Tela tela){
-        Transaction t = Dao.getSession().beginTransaction();
         try {
             Dao.getSession().delete(tela);
-            t.commit();
         } catch (Exception e) {
-            t.rollback();
             e.printStackTrace();
         }
     }

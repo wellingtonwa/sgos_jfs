@@ -6,7 +6,6 @@ package dao;
 
 import java.util.List;
 import model.Grupo;
-import org.hibernate.Transaction;
 
 
 /**
@@ -16,28 +15,22 @@ import org.hibernate.Transaction;
 public class GrupoDao {
     
     public void save(Grupo grupo){
-        Transaction t = Dao.getSession().beginTransaction();
         try {
             if(grupo.getId() == 0){
                 Dao.getSession().save(grupo);
             }
             else{
-                Dao.getSession().update(grupo);
+                Dao.getSession().merge(grupo);
             }
-            t.commit();
         } catch (Exception e) {
-            t.rollback();
             e.printStackTrace();
         }
     }
     
     public void delete(Grupo grupo){
-        Transaction t = Dao.getSession().beginTransaction();
         try {
             Dao.getSession().delete(grupo);
-            t.commit();
         } catch (Exception e) {
-            t.rollback();
             e.printStackTrace();
         }
     }

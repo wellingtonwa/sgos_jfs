@@ -5,6 +5,7 @@
 package model;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
@@ -17,10 +18,10 @@ import javax.persistence.ManyToOne;
 @Embeddable
 public class ServicoOrdemServicoPK implements Serializable{
     
-    @ManyToOne(fetch= FetchType.LAZY)
+    @ManyToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
     private OrdemServico ordemServico;
     
-    @ManyToOne(fetch= FetchType.LAZY)
+    @ManyToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
     private Servico servico;
 
     public ServicoOrdemServicoPK() {

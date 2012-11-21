@@ -7,7 +7,6 @@ package dao;
 import java.util.List;
 import model.Usuario;
 import org.hibernate.Query;
-import org.hibernate.Transaction;
 
 /**
  *
@@ -17,29 +16,23 @@ public class UsuarioDao {
     
     
     public void save(Usuario usuario){
-        Transaction t = Dao.getSession().beginTransaction();
         
         try {
             if(usuario.getId() == 0)
                 Dao.getSession().save(usuario);
             else
-                Dao.getSession().update(usuario);
-            t.commit();
+                Dao.getSession().merge(usuario);
         } catch (Exception e) {
-            t.rollback();
             e.printStackTrace();
         }
         
     }
     
     public void delete(Usuario usuario){
-        Transaction t = Dao.getSession().beginTransaction();
         
         try {
             Dao.getSession().delete(usuario);
-            t.commit();
         } catch (Exception e) {
-            t.rollback();
             e.printStackTrace();
         }
     }

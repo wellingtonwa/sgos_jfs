@@ -15,15 +15,12 @@ import org.hibernate.Transaction;
 public class PermissaoDao {
     
     public void save(Permissao permissao){
-        Transaction t = Dao.getSession().beginTransaction();
         try {
             if(permissao.getId()==0)
                 Dao.getSession().save(permissao);
             else
-                Dao.getSession().update(permissao);
-            t.commit();
+                Dao.getSession().merge(permissao);
         } catch (Exception e) {
-            t.rollback();
             e.printStackTrace();
         }
     }
@@ -32,9 +29,7 @@ public class PermissaoDao {
         Transaction t = Dao.getSession().beginTransaction();
         try {
             Dao.getSession().delete(permissao);
-            t.commit();
         } catch (Exception e) {
-            t.rollback();
             e.printStackTrace();
         }
     }

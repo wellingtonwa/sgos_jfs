@@ -13,54 +13,53 @@ import org.hibernate.cfg.AnnotationConfiguration;
  * @author wellington
  */
 public class Dao {
-  private static Session session; 
-  
-  private static ThreadLocal threadlocal = new ThreadLocal();
-  private static SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory(); 
+
+    private static Session session;
+    private static ThreadLocal threadlocal = new ThreadLocal();
+    private static SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
 
     private Dao() {
-            // TODO Auto-generated constructor stub
+        // TODO Auto-generated constructor stub
     }
-    
-    public static  Session getSession(){
-            
-            if(session == null || !session.isOpen()){
-                    session = sessionFactory.openSession();
-                    threadlocal.set(session);
-            }
-            
-            return session;
+
+    public static Session getSession() {
+        session = (Session) threadlocal.get();
+        if (session == null || !session.isOpen()) {
+            session = sessionFactory.openSession();
+            threadlocal.set(session);
+        }
+
+        return session;
     }
-    
-    public void begin(){
+
+    public void begin() {
         getSession().beginTransaction();
 
     }
-    
-    public void commit(){
+
+    public void commit() {
         getSession().getTransaction().commit();
     }
 
-    public void rollback(){
+    public void rollback() {
         getSession().getTransaction().rollback();
     }
-    
-    public void close(){
+
+    public void close() {
         getSession().close();
     }
-    
+
     public static void shutdown() {
         // Close caches and connection pools
-         getSessionFactory().close();
+        getSessionFactory().close();
     }
-    
+
     //passamos ele para o Filter
     public static SessionFactory getSessionFactory() {
-        return sessionFactory; 
+        return sessionFactory;
     }
-    
+
     public static void setSessionFactory(SessionFactory sessionFactory) {
         Dao.sessionFactory = sessionFactory;
     }
-  
 }

@@ -8,7 +8,6 @@ package dao;
 import java.util.List;
 import model.Servico;
 import org.hibernate.Query;
-import org.hibernate.Transaction;
 
 /**
  *
@@ -17,28 +16,22 @@ import org.hibernate.Transaction;
 public class ServicoDao {
     
     public void save(Servico servico){
-        Transaction t = Dao.getSession().beginTransaction();
         
         try {
             if(servico.getId() == 0)
                 Dao.getSession().save(servico);
             else
-                Dao.getSession().update(servico);
-            t.commit();
+                Dao.getSession().merge(servico);
         } catch (Exception e) {
-            t.rollback();
             e.printStackTrace();
         }
     }
     
     public void delete(Servico servico){
-        Transaction t = Dao.getSession().beginTransaction();
         
         try {
             Dao.getSession().delete(servico);
-            t.commit();
         } catch (Exception e) {
-            t.rollback();
             e.printStackTrace();
         }
     }

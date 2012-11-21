@@ -99,9 +99,12 @@ public class UsuarioAuthController {
     }
     
     public boolean temPermissaoTela(String nomeTela){
-        if(current.getGrupos().size()>0){
+        if(current.getIsAdmin())
+            return true;
+        
+        if(current.getGrupos() != null && current.getGrupos().size()>0){
             for(Grupo grupo : current.getGrupos()){
-                if(grupo.getPermissoesGrupo().size()>0){
+                if(grupo.getPermissoesGrupo() != null && grupo.getPermissoesGrupo().size()>0){
                     for(GrupoPermissaoTela grupoPermissaoTela : grupo.getPermissoesGrupo()){
                         if(nomeTela.equals(grupoPermissaoTela.getId().getTela().getNome())){
                             return true;
@@ -114,6 +117,9 @@ public class UsuarioAuthController {
     }
     
     public boolean temPermissaoTelaAcao(String nomeTela, String permissao){
+        
+        if(current.getIsAdmin())
+            return true;
         
         if(current.getGrupos().size()>0){
             for(Grupo grupo : current.getGrupos()){

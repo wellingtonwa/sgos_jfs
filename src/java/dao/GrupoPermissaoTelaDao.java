@@ -5,7 +5,6 @@
 package dao;
 
 import model.GrupoPermissaoTela;
-import org.hibernate.Transaction;
 
 /**
  *
@@ -14,12 +13,9 @@ import org.hibernate.Transaction;
 public class GrupoPermissaoTelaDao {
     
     public void delete(GrupoPermissaoTela grupoPermissaoTela){
-        Transaction t = Dao.getSession().beginTransaction();
         try {
             Dao.getSession().delete(grupoPermissaoTela);
-            t.commit();
         } catch (Exception e) {
-            t.rollback();
             e.printStackTrace();
         }
     }

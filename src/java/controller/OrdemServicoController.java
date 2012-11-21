@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dao.ClienteDao;
 import dao.OrdemServicoDao;
 import dao.ServicoDao;
 import java.io.Serializable;
@@ -135,7 +136,7 @@ public class OrdemServicoController implements Serializable{
         RequestContext.getCurrentInstance().execute("ordemServicoPanel.show()");
     }
     
-    public void save(){
+    public void save(){ 
         current.setServicos(listServicoOrdemServico);
         new OrdemServicoDao().save(current);
         atualizarLista();
@@ -149,7 +150,7 @@ public class OrdemServicoController implements Serializable{
     }
     
     public void prepararEditar(){
-        current = (OrdemServico) dataModel.getRowData();
+        current = new OrdemServicoDao().getRegistro(((OrdemServico) dataModel.getRowData()).getId());
         listServicoOrdemServico = current.getServicos();
         
         this.carregarServicosByTipoEquipamento();
@@ -164,6 +165,7 @@ public class OrdemServicoController implements Serializable{
     
     public void carregarEquipamentoByCliente(){
         if(current.getCliente() != null && current.getCliente().getId() != 0){
+            current.setCliente(new ClienteDao().getRegistro(current.getCliente().getId()));
             equipamentos = current.getCliente().getEquipamentos();
             current.setEquipamento(equipamentos.get(0));
         }
@@ -188,8 +190,14 @@ public class OrdemServicoController implements Serializable{
         
         boolean encontrado = false;
         
-        if(listServicoOrdemServico.size() > 0){
-            for(ServicoOrdemServico servicoOrdemServico : listServicoOrdemServico){
+        if(current.getServicos() == null){
+            current.setServicos(listServicoOrdemServico);
+        }
+        
+        if(current.getServicos().size() > 0){
+                        
+            for(ServicoOrdemServico servicoOrdemServico : current.getServicos()){
+                
                 if(servicoOrdemServico.getId().getServico().getId() == servico.getId()){
                     servicoOrdemServico.setQuantidade(servicoOrdemServico.getQuantidade()+1);
                     encontrado = true;
@@ -202,10 +210,10 @@ public class OrdemServicoController implements Serializable{
             ServicoOrdemServico servicoOrdemServico = new ServicoOrdemServico();
             servicoOrdemServico.setQuantidade(1);
             servicoOrdemServico.setId(new ServicoOrdemServicoPK(current, servico));        
-            listServicoOrdemServico.add(servicoOrdemServico);
+            current.getServicos().add(servicoOrdemServico);
         }
         
-        dataModelServicosAdicionados = new ListDataModel(listServicoOrdemServico);
+        dataModelServicosAdicionados = new ListDataModel(current.getServicos());
         
         this.calcularPrecos();
 
@@ -216,8 +224,12 @@ public class OrdemServicoController implements Serializable{
         
         //System.out.println(servicoOrdemServicoDataTable.getId().getServico().getId()+"<<<\n\n\n");
         
-        if(listServicoOrdemServico.size() > 0){
-            for(ServicoOrdemServico servicoOrdemServico : listServicoOrdemServico){
+        if(current.getServicos() == null){
+            current.setServicos(listServicoOrdemServico);
+        }
+        
+        if(current.getServicos().size() > 0){
+            for(ServicoOrdemServico servicoOrdemServico : current.getServicos()){
 //                System.out.println(servicoOrdemServico.getId().getServico().getId()+"<<<\n\n\n");
                 if(servicoOrdemServico.getId().getServico().getId() == servico.getId()){
                     int novaQuantidade = servicoOrdemServico.getQuantidade()-1;
@@ -225,7 +237,7 @@ public class OrdemServicoController implements Serializable{
                         servicoOrdemServico.setQuantidade(novaQuantidade);
                     }
                     else{
-                        listServicoOrdemServico.remove(servicoOrdemServico);
+                        current.getServicos().remove(servicoOrdemServico);
                     }
                     break;
                 }
@@ -234,13 +246,13 @@ public class OrdemServicoController implements Serializable{
         
         this.calcularPrecos();
         
-        dataModelServicosAdicionados = new ListDataModel(listServicoOrdemServico);
+        dataModelServicosAdicionados = new ListDataModel(current.getServicos());
     }
     
     public void calcularPrecos(){
         Double valorDouble = 0.0;
-        if(listServicoOrdemServico.size() > 0){
-            for(ServicoOrdemServico servicoOrdemServico : listServicoOrdemServico){
+        if(current.getServicos().size() > 0){
+            for(ServicoOrdemServico servicoOrdemServico : current.getServicos()){
                 valorDouble += servicoOrdemServico.getId().getServico().getPreco() * servicoOrdemServico.getQuantidade();
             }
         }
